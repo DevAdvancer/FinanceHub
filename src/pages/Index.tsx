@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import {
   Wallet, ArrowRight, Shield, PieChart, Bell, TrendingUp,
   Target, CreditCard, Sparkles, CheckCircle2, Users, Lock,
-  BarChart3, Zap, Globe, ChevronRight
+  Zap, Globe, ChevronRight
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -52,8 +52,8 @@ const Index = () => {
   if (user) return <Navigate to="/dashboard" replace />;
 
   const stats = [
-    { value: '50K+', label: 'Active Users' },
-    { value: '₹2Cr+', label: 'Tracked Monthly' },
+    { value: '10+', label: 'Active Users' },
+    { value: '₹20K+', label: 'Tracked Monthly' },
     { value: '4.9★', label: 'User Rating' },
     { value: '99.9%', label: 'Uptime' },
   ];
@@ -159,7 +159,7 @@ const Index = () => {
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
             <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How it works</a>
-            <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Reviews</a>
+            {/* <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Reviews</a> */}
           </div>
           <Link to="/auth">
             <Button className="gap-2 shadow-glow">
@@ -182,7 +182,7 @@ const Index = () => {
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-8 animate-fade-in">
                 <Sparkles className="h-4 w-4" />
-                <span className="text-sm font-medium">Trusted by 50,000+ Indians</span>
+                <span className="text-sm font-medium">Trusted by 10+ Indians</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight mb-6 animate-slide-up">
@@ -314,7 +314,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Testimonials Section */}
+        {/* Testimonials Section
         <section id="testimonials" className="py-20 md:py-32 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-16">
@@ -354,7 +354,7 @@ const Index = () => {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* CTA Section */}
         <section className="py-20 md:py-32 relative overflow-hidden">
@@ -404,7 +404,7 @@ const Index = () => {
               <div className="flex items-center gap-6 text-sm text-muted-foreground">
                 <a href="#features" className="hover:text-foreground transition-colors">Features</a>
                 <a href="#how-it-works" className="hover:text-foreground transition-colors">How it works</a>
-                <a href="#testimonials" className="hover:text-foreground transition-colors">Reviews</a>
+                {/* <a href="#testimonials" className="hover:text-foreground transition-colors">Reviews</a> */}
                 <Link to="/auth" className="hover:text-foreground transition-colors">Sign up</Link>
               </div>
 
