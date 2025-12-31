@@ -75,7 +75,14 @@ export function WelcomeNotification({ userName, stats, exceededBudgets }: Welcom
             <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background/50">
               <TrendingUp className="h-4 w-4 text-success" />
               <div>
-                <p className="text-xs text-muted-foreground">Income</p>
+                <p className="text-xs text-muted-foreground">Total Balance</p>
+                <p className="font-semibold text-success">{formatAmount(stats.savings)}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background/50">
+              <TrendingUp className="h-4 w-4 text-success" />
+              <div>
+                <p className="text-xs text-muted-foreground">Income (This Month)</p>
                 <p className="font-semibold text-success">{formatAmount(stats.income)}</p>
               </div>
             </div>

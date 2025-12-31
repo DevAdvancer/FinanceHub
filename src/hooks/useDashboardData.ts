@@ -55,7 +55,26 @@ export function useDashboardData() {
 
     const transactions = txData ? await decryptEntities(txData, 'transactions') : [];
 
-    // Fetch all transactions needed for dashboard calculations (last 6 months)
+    // Fetch all transactions for total balance calculation
+    const { data: allTx } = await supabase
+      .from('transactions')
+      .select('type, amount, date')
+      .eq('user_id', user.id)
+      .eq('is_deleted', false)
+      .order('date', { ascending: true });
+
+    const decryptedAllTx = allTx ? await decryptEntities(allTx, 'transactions') : [];
+
+    // Calculate total balance from ALL transactions
+    const totalIncome = decryptedAllTx
+      .filter((t) => t.type === 'income')
+      .reduce((sum, t) => sum + Number(t.amount), 0);
+    const totalExpenses = decryptedAllTx
+      .filter((t) => t.type === 'expense')
+      .reduce((sum, t) => sum + Number(t.amount), 0);
+    const totalBalance = totalIncome - totalExpenses;
+
+    // Fetch transactions for last 6 months (for monthly trends and current month stats)
     const { data: rangeTx } = await supabase
       .from('transactions')
       .select('type, amount, date, category_id, category:categories(name, color)')
@@ -80,7 +99,7 @@ export function useDashboardData() {
     const expenses = currentMonthTx
       .filter((t) => t.type === 'expense')
       .reduce((sum, t) => sum + Number(t.amount), 0);
-    const stats = { income, expenses, savings: income - expenses };
+    const stats = { income, expenses, savings: totalBalance };
 
     // Category breakdown (current month)
     const expensesByCategory = currentMonthTx

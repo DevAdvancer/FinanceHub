@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface CategoryData {
   name: string;
@@ -13,6 +14,7 @@ interface ExpenseChartProps {
 }
 
 export function ExpenseChart({ data, isLoading }: ExpenseChartProps) {
+  const { formatAmount } = useCurrency();
   if (isLoading) {
     return (
       <Card>
@@ -66,7 +68,7 @@ export function ExpenseChart({ data, isLoading }: ExpenseChartProps) {
                         <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
                           <p className="font-medium">{data.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            ${data.value.toFixed(2)} ({percentage}%)
+                            {formatAmount(data.value)} ({percentage}%)
                           </p>
                         </div>
                       );

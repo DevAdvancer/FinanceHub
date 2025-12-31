@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface MonthlyData {
   month: string;
@@ -13,6 +14,7 @@ interface MonthlyTrendProps {
 }
 
 export function MonthlyTrend({ data, isLoading }: MonthlyTrendProps) {
+  const { formatAmount } = useCurrency();
   if (isLoading) {
     return (
       <Card>
@@ -62,7 +64,7 @@ export function MonthlyTrend({ data, isLoading }: MonthlyTrendProps) {
                   tick={{ fontSize: 12 }}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) => formatAmount(value)}
                   className="fill-muted-foreground"
                 />
                 <Tooltip
@@ -73,7 +75,7 @@ export function MonthlyTrend({ data, isLoading }: MonthlyTrendProps) {
                           <p className="font-medium mb-2">{label}</p>
                           {payload.map((entry, index) => (
                             <p key={index} className="text-sm" style={{ color: entry.color }}>
-                              {entry.name}: ${Number(entry.value).toFixed(2)}
+                              {entry.name}: {formatAmount(Number(entry.value))}
                             </p>
                           ))}
                         </div>
