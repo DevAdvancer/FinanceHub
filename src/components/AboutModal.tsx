@@ -21,8 +21,8 @@ export function AboutModal({ collapsed = false, isMobile = false }: AboutModalPr
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           size={showText ? "default" : "icon"}
           className={showText ? "w-full justify-start gap-2" : "w-full"}
         >
@@ -108,7 +108,7 @@ export function AboutModal({ collapsed = false, isMobile = false }: AboutModalPr
 
           <div className="pt-4 border-t">
             <p className="text-xs text-muted-foreground text-center">
-              Version 1.0.0 • Made with <Heart className="h-3 w-3 inline text-destructive" /> by the FinanceHub Team
+              Version 1.0.0 • Made with <Heart className="h-3 w-3 inline text-destructive" /> by Abhirup Kumar (DevAdvancer)
             </p>
           </div>
         </div>

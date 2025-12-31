@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { 
-  Wallet, ArrowRight, Shield, PieChart, Bell, TrendingUp, 
+import {
+  Wallet, ArrowRight, Shield, PieChart, Bell, TrendingUp,
   Target, CreditCard, Sparkles, CheckCircle2, Users, Lock,
   BarChart3, Zap, Globe, ChevronRight
 } from 'lucide-react';
@@ -59,66 +59,66 @@ const Index = () => {
   ];
 
   const features = [
-    { 
-      icon: PieChart, 
-      title: 'Smart Analytics', 
+    {
+      icon: PieChart,
+      title: 'Smart Analytics',
       desc: 'AI-powered insights reveal spending patterns and help you make smarter financial decisions.',
       gradient: 'from-primary to-emerald-400'
     },
-    { 
-      icon: Target, 
-      title: 'Goal Tracking', 
+    {
+      icon: Target,
+      title: 'Goal Tracking',
       desc: 'Set savings goals and watch your progress with beautiful visualizations and milestone celebrations.',
       gradient: 'from-blue-500 to-cyan-400'
     },
-    { 
-      icon: Bell, 
-      title: 'Smart Alerts', 
+    {
+      icon: Bell,
+      title: 'Smart Alerts',
       desc: 'Get notified before you overspend. Budget alerts keep you on track without the stress.',
       gradient: 'from-amber-500 to-orange-400'
     },
-    { 
-      icon: Shield, 
-      title: 'Bank-level Security', 
+    {
+      icon: Shield,
+      title: 'Bank-level Security',
       desc: 'Your data is encrypted with AES-256 and never shared. Privacy is our priority.',
       gradient: 'from-violet-500 to-purple-400'
     },
-    { 
-      icon: Zap, 
-      title: 'Lightning Fast', 
+    {
+      icon: Zap,
+      title: 'Lightning Fast',
       desc: 'Instant sync across devices. Add transactions in seconds, not minutes.',
       gradient: 'from-rose-500 to-pink-400'
     },
-    { 
-      icon: Globe, 
-      title: 'Multi-Currency', 
+    {
+      icon: Globe,
+      title: 'Multi-Currency',
       desc: 'Support for INR, USD, EUR, and 20+ currencies with real-time conversion.',
       gradient: 'from-teal-500 to-green-400'
     },
   ];
 
   const steps = [
-    { 
-      step: '01', 
-      title: 'Create Account', 
+    {
+      step: '01',
+      title: 'Create Account',
       desc: 'Sign up in 30 seconds. No credit card required.',
       icon: Users
     },
-    { 
-      step: '02', 
-      title: 'Add Transactions', 
+    {
+      step: '02',
+      title: 'Add Transactions',
       desc: 'Log your income and expenses with smart categorization.',
       icon: CreditCard
     },
-    { 
-      step: '03', 
-      title: 'Set Budgets & Goals', 
+    {
+      step: '03',
+      title: 'Set Budgets & Goals',
       desc: 'Define your spending limits and savings targets.',
       icon: Target
     },
-    { 
-      step: '04', 
-      title: 'Watch Your Wealth Grow', 
+    {
+      step: '04',
+      title: 'Watch Your Wealth Grow',
       desc: 'Get insights and see your financial health improve.',
       icon: TrendingUp
     },
@@ -176,7 +176,7 @@ const Index = () => {
           <div className="absolute inset-0 gradient-hero" />
           <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" />
           <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-info/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-          
+
           <div className="container mx-auto px-4 relative">
             <div className="text-center max-w-4xl mx-auto">
               {/* Badge */}
@@ -184,7 +184,7 @@ const Index = () => {
                 <Sparkles className="h-4 w-4" />
                 <span className="text-sm font-medium">Trusted by 50,000+ Indians</span>
               </div>
-              
+
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight mb-6 animate-slide-up">
                 Master Your Money,{' '}
                 <span className="relative">
@@ -194,12 +194,12 @@ const Index = () => {
                   </svg>
                 </span>
               </h1>
-              
+
               <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: '100ms' }}>
-                The beautiful, free personal finance app that makes tracking money feel effortless. 
+                The beautiful, free personal finance app that makes tracking money feel effortless.
                 Join thousands achieving their financial goals.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: '200ms' }}>
                 <Link to="/auth">
                   <Button size="lg" className="gap-2 px-8 text-lg h-14 shadow-glow">
@@ -254,11 +254,11 @@ const Index = () => {
                 Powerful features wrapped in a beautiful interface. No finance degree required.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((feature, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className="group relative p-6 rounded-2xl bg-card shadow-card hover:shadow-lg transition-all duration-300 animate-slide-up border border-border/50"
                   style={{ animationDelay: `${i * 100}ms` }}
                 >
@@ -284,11 +284,11 @@ const Index = () => {
                 From signup to savings insights in under 5 minutes.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
               {steps.map((step, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className="relative text-center animate-slide-up"
                   style={{ animationDelay: `${i * 150}ms` }}
                 >
@@ -296,7 +296,7 @@ const Index = () => {
                   {i < steps.length - 1 && (
                     <div className="hidden lg:block absolute top-12 left-1/2 w-full h-0.5 bg-gradient-to-r from-primary/50 to-primary/20" />
                   )}
-                  
+
                   <div className="relative inline-flex">
                     <div className="w-24 h-24 rounded-2xl bg-card shadow-card flex items-center justify-center mb-4 border border-border/50 group hover:shadow-glow transition-shadow duration-300">
                       <step.icon className="h-10 w-10 text-primary" />
@@ -305,7 +305,7 @@ const Index = () => {
                       {step.step}
                     </span>
                   </div>
-                  
+
                   <h3 className="font-display font-semibold text-lg mb-2">{step.title}</h3>
                   <p className="text-muted-foreground text-sm">{step.desc}</p>
                 </div>
@@ -325,11 +325,11 @@ const Index = () => {
                 See what our users are saying about FinanceHub.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {testimonials.map((testimonial, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className="p-6 rounded-2xl bg-card shadow-card border border-border/50 animate-slide-up"
                   style={{ animationDelay: `${i * 100}ms` }}
                 >
@@ -360,29 +360,29 @@ const Index = () => {
         <section className="py-20 md:py-32 relative overflow-hidden">
           <div className="absolute inset-0 gradient-hero" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl" />
-          
+
           <div className="container mx-auto px-4 relative">
             <div className="text-center max-w-3xl mx-auto">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
                 <Sparkles className="h-4 w-4" />
                 <span className="text-sm font-medium">100% Free Forever</span>
               </div>
-              
+
               <h2 className="text-3xl md:text-5xl font-display font-bold mb-6">
                 Ready to Transform Your{' '}
                 <span className="text-primary">Financial Life?</span>
               </h2>
-              
+
               <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
                 Join 50,000+ users who have taken control of their finances. No credit card required. Start for free today.
               </p>
-              
+
               <Link to="/auth">
                 <Button size="lg" className="gap-2 px-10 text-lg h-14 shadow-glow">
                   Get Started Free <ArrowRight className="h-5 w-5" />
                 </Button>
               </Link>
-              
+
               <p className="mt-6 text-sm text-muted-foreground">
                 ✓ Free forever &nbsp;&nbsp; ✓ No credit card &nbsp;&nbsp; ✓ 2-minute setup
               </p>
@@ -400,16 +400,16 @@ const Index = () => {
                 </div>
                 <span className="font-display font-bold">FinanceHub</span>
               </div>
-              
+
               <div className="flex items-center gap-6 text-sm text-muted-foreground">
                 <a href="#features" className="hover:text-foreground transition-colors">Features</a>
                 <a href="#how-it-works" className="hover:text-foreground transition-colors">How it works</a>
                 <a href="#testimonials" className="hover:text-foreground transition-colors">Reviews</a>
                 <Link to="/auth" className="hover:text-foreground transition-colors">Sign up</Link>
               </div>
-              
+
               <p className="text-sm text-muted-foreground">
-                © 2024 FinanceHub. Made with ❤️ in India
+                © 2024 FinanceHub. Made with ❤️ by Abhirup Kumar (DevAdvancer).
               </p>
             </div>
           </div>

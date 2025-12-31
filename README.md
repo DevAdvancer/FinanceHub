@@ -1,73 +1,172 @@
-# Welcome to your Lovable project
+<div align="center">
+  <img src="public/financehub.png" alt="FinanceHub Logo" width="200"/>
 
-## Project info
+  # 💰 FinanceHub
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+  A modern, full-featured personal finance management application built with React, TypeScript, and Supabase. Track your expenses, manage budgets, set financial goals, and gain insights into your spending patterns with an intuitive and beautiful interface.
 
-## How can I edit this code?
+  ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+  ![React](https://img.shields.io/badge/React-18.3.1-blue)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue)
+</div>
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+- 📊 **Interactive Dashboard** - Real-time overview of your financial health with charts and statistics
+- 💸 **Transaction Management** - Add, edit, and categorize transactions with ease
+- 🎯 **Budget Tracking** - Set and monitor budgets across different categories
+- 🏆 **Financial Goals** - Create and track progress towards your savings goals
+- 📈 **Insights & Analytics** - Visualize spending patterns with interactive charts
+- 📅 **Yearly Summary** - Comprehensive annual financial reports
+- 🔐 **Data Encryption** - Optional client-side encryption for sensitive data
+- 🌓 **Dark Mode** - Eye-friendly dark theme support
+- 📱 **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+- ⚡ **Real-time Updates** - Live data synchronization with Supabase
+- 📤 **CSV Export** - Export your financial data for external analysis
+- ⌨️ **Keyboard Shortcuts** - Navigate efficiently with keyboard commands
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 🚀 Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (v18 or higher)
+- npm, yarn, or bun package manager
+- Supabase account and project
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. **Clone the repository**
+   ```bash
+   git clone <YOUR_GIT_URL>
+   cd FinanceHub
+   ```
 
-Follow these steps:
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   bun install
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. **Set up environment variables**
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+   Create a `.env` file in the root directory with your Supabase credentials:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+4. **Start the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   bun dev
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+5. **Open your browser**
+
+   Navigate to `http://localhost:5173` to see the application.
+
+## 🛠️ Built With
+
+- **Frontend Framework:** [React 18](https://react.dev/) - A JavaScript library for building user interfaces
+- **Language:** [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript for enhanced development experience
+- **Build Tool:** [Vite](https://vitejs.dev/) - Next-generation frontend tooling
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com/) - Re-usable components built with Radix UI
+- **Backend:** [Supabase](https://supabase.com/) - Open-source Firebase alternative
+- **State Management:** [TanStack Query](https://tanstack.com/query) - Powerful data synchronization
+- **Routing:** [React Router](https://reactrouter.com/) - Declarative routing for React
+- **Charts:** [Recharts](https://recharts.org/) - Composable charting library
+- **Forms:** [React Hook Form](https://react-hook-form.com/) - Performant form validation
+- **Icons:** [Lucide React](https://lucide.dev/) - Beautiful & consistent icons
+
+## 📁 Project Structure
+
+```
+FinanceHub/
+├── src/
+│   ├── components/          # Reusable UI components
+│   │   ├── dashboard/       # Dashboard-specific components
+│   │   ├── layout/          # Layout components (Sidebar, etc.)
+│   │   ├── settings/        # Settings components
+│   │   ├── skeletons/       # Loading skeletons
+│   │   └── ui/              # shadcn/ui components
+│   ├── contexts/            # React Context providers
+│   ├── hooks/               # Custom React hooks
+│   ├── integrations/        # Third-party integrations
+│   │   └── supabase/        # Supabase client and queries
+│   ├── lib/                 # Utility functions
+│   ├── pages/               # Page components
+│   └── main.tsx             # Application entry point
+├── public/                  # Static assets
+└── ...config files          # Configuration files
 ```
 
-**Edit a file directly in GitHub**
+## 🎯 Key Features Explained
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Transaction Management
+Track all your income and expenses with detailed categorization. Each transaction can be tagged with categories, payment methods, and notes for better organization.
 
-**Use GitHub Codespaces**
+### Budget Tracking
+Set monthly budgets for different spending categories and monitor your progress in real-time. Receive visual indicators when approaching or exceeding budget limits.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Financial Goals
+Define savings goals with target amounts and deadlines. Track your progress with visual indicators and stay motivated to achieve your financial objectives.
 
-## What technologies are used for this project?
+### Insights & Analytics
+- Monthly spending trends
+- Category-wise expense breakdown
+- Income vs. Expense comparisons
+- Custom date range analysis
 
-This project is built with:
+### Data Security
+Optional end-to-end encryption ensures your financial data remains private and secure. Encryption keys are stored locally and never leave your device.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📜 Scripts
 
-## How can I deploy this project?
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run build:dev` - Build for development
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 🔒 Security
 
-## Can I connect a custom domain to my Lovable project?
+- Client-side encryption for sensitive data
+- Secure authentication with Supabase Auth
+- Environment variable management for API keys
+- Row-level security policies in Supabase
 
-Yes, you can!
+## 🤝 Contributing
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [shadcn/ui](https://ui.shadcn.com/) for the beautiful component library
+- [Supabase](https://supabase.com/) for the backend infrastructure
+- [Lucide](https://lucide.dev/) for the icon set
+- All contributors who help improve this project
+
+## 📧 Contact
+
+For questions or feedback, please open an issue on GitHub.
+
+---
+
+Made with ❤️ using React and TypeScript
