@@ -9,6 +9,7 @@ interface DashboardStats {
   income: number;
   expenses: number;
   savings: number;
+  totalIncome: number;
 }
 
 interface CategoryData {
@@ -68,10 +69,10 @@ export function useDashboardData() {
     // Calculate total balance from ALL transactions
     const totalIncome = decryptedAllTx
       .filter((t) => t.type === 'income')
-      .reduce((sum, t) => sum + Number(t.amount), 0);
+      .reduce((sum, t) => sum + Number(t.amount || 0), 0);
     const totalExpenses = decryptedAllTx
       .filter((t) => t.type === 'expense')
-      .reduce((sum, t) => sum + Number(t.amount), 0);
+      .reduce((sum, t) => sum + Number(t.amount || 0), 0);
     const totalBalance = totalIncome - totalExpenses;
 
     // Fetch transactions for last 6 months (for monthly trends and current month stats)
@@ -99,7 +100,7 @@ export function useDashboardData() {
     const expenses = currentMonthTx
       .filter((t) => t.type === 'expense')
       .reduce((sum, t) => sum + Number(t.amount), 0);
-    const stats = { income, expenses, savings: totalBalance };
+    const stats = { income, expenses, savings: totalBalance, totalIncome };
 
     // Category breakdown (current month)
     const expensesByCategory = currentMonthTx

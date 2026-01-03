@@ -80,7 +80,17 @@ export default function Dashboard() {
           />
           <StatCard
             title="Savings Rate"
-            value={stats.income > 0 ? `${((stats.savings / stats.income) * 100).toFixed(1)}%` : '0%'}
+            value={(() => {
+              const totalIncome = stats.totalIncome || 0;
+              if (totalIncome > 0) {
+                return `${((stats.savings / totalIncome) * 100).toFixed(1)}%`;
+              }
+              // Fallback to monthly income if totalIncome is 0
+              if (stats.income > 0) {
+                return `${(((stats.income - stats.expenses) / stats.income) * 100).toFixed(1)}%`;
+              }
+              return '0%';
+            })()}
             icon={<PiggyBank className="h-6 w-6" />}
           />
         </div>

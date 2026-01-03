@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,20 +10,21 @@ import { SidebarProvider } from "@/contexts/SidebarContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { KeyboardShortcutsModal } from "@/components/KeyboardShortcutsModal";
 import { PrefetchProvider } from "@/components/PrefetchProvider";
+import { PageLoader } from "@/components/ui/page-loader";
 
-// Import all pages directly (no lazy loading for instant navigation)
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
-import Transactions from "./pages/Transactions";
-import Categories from "./pages/Categories";
-import Budgets from "./pages/Budgets";
-import Goals from "./pages/Goals";
-import Insights from "./pages/Insights";
-import Settings from "./pages/Settings";
-import YearlySummary from "./pages/YearlySummary";
-import Admin from "./pages/Admin";
-import NotFound from "./pages/NotFound";
+// Lazy load pages for code splitting - reduces initial bundle size
+const Index = lazy(() => import("./pages/Index"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Transactions = lazy(() => import("./pages/Transactions"));
+const Categories = lazy(() => import("./pages/Categories"));
+const Budgets = lazy(() => import("./pages/Budgets"));
+const Goals = lazy(() => import("./pages/Goals"));
+const Insights = lazy(() => import("./pages/Insights"));
+const Settings = lazy(() => import("./pages/Settings"));
+const YearlySummary = lazy(() => import("./pages/YearlySummary"));
+const Admin = lazy(() => import("./pages/Admin"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,20 +47,22 @@ const App = () => (
                   <Toaster />
                   <Sonner />
                   <KeyboardShortcutsModal />
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/transactions" element={<Transactions />} />
-                    <Route path="/categories" element={<Categories />} />
-                    <Route path="/budgets" element={<Budgets />} />
-                    <Route path="/goals" element={<Goals />} />
-                    <Route path="/insights" element={<Insights />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/yearly-summary" element={<YearlySummary />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                  <Suspense fallback={<PageLoader />}>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/transactions" element={<Transactions />} />
+                      <Route path="/categories" element={<Categories />} />
+                      <Route path="/budgets" element={<Budgets />} />
+                      <Route path="/goals" element={<Goals />} />
+                      <Route path="/insights" element={<Insights />} />
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="/yearly-summary" element={<YearlySummary />} />
+                      <Route path="/admin" element={<Admin />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
                 </TooltipProvider>
               </PrefetchProvider>
             </SidebarProvider>

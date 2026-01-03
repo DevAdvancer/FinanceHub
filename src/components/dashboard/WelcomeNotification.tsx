@@ -11,6 +11,7 @@ interface WelcomeNotificationProps {
     income: number;
     expenses: number;
     savings: number;
+    totalIncome: number;
   };
   exceededBudgets: number;
 }
@@ -20,7 +21,14 @@ export function WelcomeNotification({ userName, stats, exceededBudgets }: Welcom
   const [currentTip, setCurrentTip] = useState(0);
   const { formatAmount } = useCurrency();
 
-  const savingsRate = stats.income > 0 ? (stats.savings / stats.income) * 100 : 0;
+  const totalIncome = stats.totalIncome || 0;
+  let savingsRate = 0;
+  if (totalIncome > 0) {
+    savingsRate = (stats.savings / totalIncome) * 100;
+  } else if (stats.income > 0) {
+    // Fallback to monthly income if totalIncome is 0
+    savingsRate = ((stats.income - stats.expenses) / stats.income) * 100;
+  }
   const isPositiveSavings = stats.savings > 0;
 
   const tips = [
