@@ -20,39 +20,41 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Split node_modules into separate chunks for better caching
           if (id.includes("node_modules")) {
-            // React and React DOM - core framework
-            if (id.includes("react") || id.includes("react-dom") || id.includes("scheduler")) {
-              return "react-vendor";
-            }
-            // React Router - routing library
+            // React Router - depends on React (large, split first)
             if (id.includes("react-router")) {
-              return "router-vendor";
+              return "react-router";
             }
-            // TanStack Query - data fetching
+            // TanStack Query - depends on React (large, split second)
             if (id.includes("@tanstack/react-query")) {
-              return "query-vendor";
+              return "react-query";
             }
-            // Supabase - backend client
-            if (id.includes("@supabase")) {
-              return "supabase-vendor";
+            // React Hook Form - depends on React
+            if (id.includes("react-hook-form")) {
+              return "react-hook-form";
             }
-            // Radix UI components - UI library (large)
+            // Radix UI components - large UI library (depends on React)
             if (id.includes("@radix-ui")) {
               return "radix-vendor";
             }
-            // Recharts - charting library (large)
+            // Recharts - large charting library
             if (id.includes("recharts")) {
               return "charts-vendor";
             }
-            // Date utilities
+            // Supabase - backend client (independent)
+            if (id.includes("@supabase")) {
+              return "supabase-vendor";
+            }
+            // Date utilities (independent)
             if (id.includes("date-fns")) {
               return "date-vendor";
             }
-            // Lucide icons
+            // Lucide icons (independent)
             if (id.includes("lucide-react")) {
               return "icons-vendor";
             }
-            // Other vendor libraries
+            // React core (react, react-dom, scheduler) - keep together in vendor
+            // This ensures React is available when other chunks need it
+            // Vite will handle the loading order automatically
             return "vendor";
           }
         },
