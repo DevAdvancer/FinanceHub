@@ -306,6 +306,12 @@ export type Database = {
         }
         Returns: boolean
       }
+      delete_user_account: {
+        Args: {
+          target_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       account_status: "active" | "suspended"
