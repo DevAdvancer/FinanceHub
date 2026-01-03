@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,16 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useCurrency, CURRENCIES } from '@/contexts/CurrencyContext';
@@ -14,13 +25,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { EncryptionStatus } from '@/components/settings/EncryptionStatus';
 import { SettingsSkeleton } from '@/components/skeletons/SettingsSkeleton';
-import { User, Bell, Palette, Shield, Save, Loader2, Lock, Eye, EyeOff, Coins } from 'lucide-react';
+import { User, Bell, Palette, Shield, Save, Loader2, Lock, Eye, EyeOff, Coins, Trash2 } from 'lucide-react';
 
 export default function Settings() {
-  const { profile, refreshProfile } = useAuth();
+  const { profile, refreshProfile, deleteAccount } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { currency, setCurrency, formatAmount } = useCurrency();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
   const [fullName, setFullName] = useState(profile?.full_name || '');
@@ -35,6 +47,9 @@ export default function Settings() {
     weeklyDigest: false,
     transactionAlerts: true,
   });
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (profile?.full_name) {
@@ -107,7 +122,7 @@ export default function Settings() {
         title: "Password updated",
         description: "Your password has been changed successfully.",
       });
-      
+
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
@@ -124,7 +139,7 @@ export default function Settings() {
 
   const handleSaveProfile = async () => {
     if (!profile) return;
-    
+
     setIsLoading(true);
     try {
       const { error } = await supabase
@@ -147,6 +162,46 @@ export default function Settings() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText.toLowerCase() !== 'delete') {
+      toast({
+        title: "Error",
+        description: "Please type 'delete' to confirm account deletion",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const { error } = await deleteAccount();
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+        setIsDeleting(false);
+        return;
+      }
+
+      toast({
+        title: "Account deleted",
+        description: "Your account and all data have been permanently deleted.",
+      });
+
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete account",
+        variant: "destructive",
+      });
+      setIsDeleting(false);
     }
   };
 
@@ -451,8 +506,8 @@ export default function Settings() {
                   </Button>
                 </div>
               </div>
-              <Button 
-                onClick={handleChangePassword} 
+              <Button
+                onClick={handleChangePassword}
                 disabled={isPasswordLoading || !currentPassword || !newPassword || !confirmPassword}
                 className="w-full"
               >
@@ -468,8 +523,95 @@ export default function Settings() {
 
           {/* Encryption Status */}
           <EncryptionStatus />
+
+          {/* Delete Account */}
+          <Card className="border-destructive/50">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Trash2 className="h-5 w-5 text-destructive" />
+                <CardTitle className="text-destructive">Delete Account</CardTitle>
+              </div>
+              <CardDescription>
+                Permanently delete your account and all associated data. This action cannot be undone.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/20">
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-destructive">Warning:</strong> This will permanently delete:
+                </p>
+                <ul className="text-sm text-muted-foreground mt-2 ml-4 list-disc space-y-1">
+                  <li>Your profile and account information</li>
+                  <li>All transactions and financial records</li>
+                  <li>All budgets and goals</li>
+                  <li>All notifications and preferences</li>
+                </ul>
+              </div>
+              <Button
+                variant="destructive"
+                onClick={() => setDeleteDialogOpen(true)}
+                className="w-full"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete My Account
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>
+                This action cannot be undone. This will permanently delete your account
+                and remove all your data from our servers.
+              </p>
+              <p className="font-semibold text-destructive">
+                To confirm, please type <strong>"delete"</strong> in the box below:
+              </p>
+              <Input
+                type="text"
+                value={deleteConfirmText}
+                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                placeholder="Type 'delete' to confirm"
+                className="mt-2"
+                autoFocus
+              />
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              onClick={() => {
+                setDeleteDialogOpen(false);
+                setDeleteConfirmText('');
+              }}
+              disabled={isDeleting}
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteAccount}
+              disabled={isDeleting || deleteConfirmText.toLowerCase() !== 'delete'}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Account
+                </>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DashboardLayout>
   );
 }

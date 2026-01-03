@@ -116,25 +116,86 @@ export default function Admin() {
         entity_id: deleteDialog.userId,
       });
 
-      // Delete related data
-      await supabase.from('transactions').delete().eq('user_id', deleteDialog.userId);
-      await supabase.from('budgets').delete().eq('user_id', deleteDialog.userId);
-      await supabase.from('notifications').delete().eq('user_id', deleteDialog.userId);
-      await supabase.from('user_roles').delete().eq('user_id', deleteDialog.userId);
-      
-      // Delete profile (cascade should handle auth.users)
-      const { error } = await supabase
+      // Delete related data in the correct order
+      // Note: Some tables have CASCADE, but we'll delete explicitly to ensure everything is removed
+
+      // Delete user-specific categories first (before transactions that reference them)
+      const { error: categoriesError } = await supabase
+        .from('categories')
+        .delete()
+        .eq('user_id', deleteDialog.userId);
+      if (categoriesError) {
+        console.warn('Error deleting categories:', categoriesError);
+      }
+
+      // Delete transactions
+      const { error: transactionsError } = await supabase
+        .from('transactions')
+        .delete()
+        .eq('user_id', deleteDialog.userId);
+      if (transactionsError) {
+        console.warn('Error deleting transactions:', transactionsError);
+      }
+
+      // Delete budgets
+      const { error: budgetsError } = await supabase
+        .from('budgets')
+        .delete()
+        .eq('user_id', deleteDialog.userId);
+      if (budgetsError) {
+        console.warn('Error deleting budgets:', budgetsError);
+      }
+
+      // Delete goals (no CASCADE constraint, must delete explicitly)
+      const { error: goalsError } = await supabase
+        .from('goals')
+        .delete()
+        .eq('user_id', deleteDialog.userId);
+      if (goalsError) {
+        console.warn('Error deleting goals:', goalsError);
+      }
+
+      // Delete notifications
+      const { error: notificationsError } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('user_id', deleteDialog.userId);
+      if (notificationsError) {
+        console.warn('Error deleting notifications:', notificationsError);
+      }
+
+      // Delete user roles
+      const { error: rolesError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', deleteDialog.userId);
+      if (rolesError) {
+        console.warn('Error deleting user roles:', rolesError);
+      }
+
+      // Delete profile last (this should cascade to auth.users if configured)
+      const { error: profileError } = await supabase
         .from('profiles')
         .delete()
         .eq('id', deleteDialog.userId);
 
-      if (error) throw error;
+      if (profileError) {
+        throw profileError;
+      }
 
-      toast({ title: "User deleted", description: "User and all related data removed" });
+      toast({
+        title: "User deleted",
+        description: "User and all related data have been permanently removed."
+      });
       setDeleteDialog({ open: false, userId: null });
       fetchUsers();
     } catch (error: any) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      console.error('Delete user error:', error);
+      toast({
+        title: "Error deleting user",
+        description: error.message || "Failed to delete user. Please check console for details.",
+        variant: "destructive"
+      });
     } finally {
       setIsProcessing(false);
     }

@@ -22,8 +22,10 @@ interface AuthContextType {
   isEncryptionReady: boolean;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signInWithGoogle: () => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  deleteAccount: () => Promise<{ error: Error | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -108,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string, fullName: string) => {
     const redirectUrl = `${window.location.origin}/`;
-    
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -140,6 +142,64 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: null };
   };
 
+  const signInWithGoogle = async () => {
+    const redirectUrl = `${window.location.origin}/`;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: redirectUrl,
+      },
+    });
+
+    if (error) {
+      return { error };
+    }
+
+    return { error: null };
+  };
+
+  const deleteAccount = async () => {
+    if (!user) {
+      return { error: new Error('No user logged in') };
+    }
+
+    try {
+      const userId = user.id;
+
+      // Delete related data
+      await supabase.from('transactions').delete().eq('user_id', userId);
+      await supabase.from('budgets').delete().eq('user_id', userId);
+      await supabase.from('notifications').delete().eq('user_id', userId);
+      await supabase.from('user_roles').delete().eq('user_id', userId);
+      await supabase.from('goals').delete().eq('user_id', userId);
+
+      // Delete profile (cascade should handle auth.users)
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', userId);
+
+      if (profileError) {
+        return { error: profileError };
+      }
+
+      // Clear local state
+      clearEncryptionKey();
+      setIsEncryptionReady(false);
+      setUser(null);
+      setSession(null);
+      setProfile(null);
+      setIsAdmin(false);
+
+      // Sign out to clear auth session
+      await supabase.auth.signOut();
+
+      return { error: null };
+    } catch (error: any) {
+      return { error: error instanceof Error ? error : new Error(error?.message || 'Failed to delete account') };
+    }
+  };
+
   const signOut = async () => {
     clearEncryptionKey();
     setIsEncryptionReady(false);
@@ -161,8 +221,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isEncryptionReady,
         signUp,
         signIn,
+        signInWithGoogle,
         signOut,
         refreshProfile,
+        deleteAccount,
       }}
     >
       {children}
